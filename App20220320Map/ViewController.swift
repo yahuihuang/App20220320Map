@@ -17,6 +17,11 @@ class ViewController: UIViewController {
         
         // 地圖類型
         myMapView.mapType = .standard
+        
+        // 不想讓使用者改變位置...
+        // Ref. https://developer.apple.com/documentation/mapkit/mkmapview
+        myMapView.isScrollEnabled = false
+        myMapView.isZoomEnabled = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
