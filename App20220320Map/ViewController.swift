@@ -20,8 +20,8 @@ class ViewController: UIViewController {
         
         // 不想讓使用者改變位置...
         // Ref. https://developer.apple.com/documentation/mapkit/mkmapview
-        myMapView.isScrollEnabled = false
-        myMapView.isZoomEnabled = false
+//        myMapView.isScrollEnabled = false
+//        myMapView.isZoomEnabled = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -64,5 +64,13 @@ class ViewController: UIViewController {
     }
     
     
+    @IBAction func mapLongPress(_ sender: UILongPressGestureRecognizer) {
+        let touchPoint = sender.location(in: myMapView)
+        let location = myMapView.convert(touchPoint, toCoordinateFrom: myMapView)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = location
+        annotation.title = "自選地點"
+        self.myMapView.addAnnotation(annotation)
+    }
 }
 
