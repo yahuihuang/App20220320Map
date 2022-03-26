@@ -16,7 +16,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         // 地圖類型
-        myMapView.mapType = .mutedStandard
+        myMapView.mapType = .standard
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -41,5 +41,23 @@ class ViewController: UIViewController {
             self.myMapView.addAnnotation(annotation)
         }
     }
+    
+    @IBAction func setMapTypeAction(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            myMapView.mapType = .standard
+            break;
+        case 1:
+            myMapView.mapType = .satellite
+            break;
+        case 2:
+            myMapView.mapType = .hybrid
+            break;
+        default:
+            break;
+        }
+    }
+    
+    
 }
 
