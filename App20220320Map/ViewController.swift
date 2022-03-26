@@ -8,7 +8,7 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, CLLocationManagerDelegate {
 
     @IBOutlet weak var myMapView: MKMapView!
     var locationManager: CLLocationManager!
@@ -35,7 +35,16 @@ class ViewController: UIViewController {
     
     func getUserLocation() {
         locationManager = CLLocationManager()
-        locationManager.requestWhenInUseAuthorization()
+        locationManager?.requestWhenInUseAuthorization()
+        
+        // 持續取得位置
+        locationManager?.delegate = self
+        // 設定精準度 (Features -> Location -> Freeway Drive)
+        locationManager?.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager?.activityType = .automotiveNavigation
+        locationManager?.startUpdatingLocation()
+        myMapView.userTrackingMode = .followWithHeading
+        
         print("===========")
         print(locationManager.location ?? "")
         print("===========")
@@ -44,6 +53,12 @@ class ViewController: UIViewController {
             print("location:\(String(describing: self.locationManager.location) )")
         })
 
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        // 有更新時取得其最新位置
+        let coordinate = locations[0].coordinate
+        print("coordinate: \(coordinate.longitude)")
     }
     
     func initDispatchQueue() {
