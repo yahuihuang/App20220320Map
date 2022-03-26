@@ -11,6 +11,7 @@ import MapKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var myMapView: MKMapView!
+    var locationManager: CLLocationManager!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,19 +26,26 @@ class ViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        initDispatchQueue()
+    }
+    
+    func initDispatchQueue() {
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            
+
             let latitude: CLLocationDegrees = 25.02701099962633
             let longitude: CLLocationDegrees = 121.52298765688852
             let location: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            
+
             // 區域
             let xScale: CLLocationDegrees = 0.01
             let yScale: CLLocationDegrees = 0.01
             let span: MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: yScale, longitudeDelta: xScale)
             let regin: MKCoordinateRegion = MKCoordinateRegion.init(center: location, span: span)
                         self.myMapView.setRegion(regin, animated: true)
-            
+
             // 大頭針
             let annotation = MKPointAnnotation()
             annotation.coordinate = location
@@ -45,6 +53,7 @@ class ViewController: UIViewController {
             annotation.subtitle = "古亭捷運站"
             self.myMapView.addAnnotation(annotation)
         }
+
     }
     
     @IBAction func setMapTypeAction(_ sender: UISegmentedControl) {
