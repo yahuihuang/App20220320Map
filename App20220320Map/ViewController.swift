@@ -11,11 +11,23 @@ import MapKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var myMapView: MKMapView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
 
-
+    override func viewDidAppear(_ animated: Bool) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            let latitude: CLLocationDegrees = 25.0444032
+            let longitude: CLLocationDegrees = 121.5141458
+            let location: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            let xScale: CLLocationDegrees = 0.01
+            let yScale: CLLocationDegrees = 0.01
+            let span: MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: yScale, longitudeDelta: xScale)
+            let regin: MKCoordinateRegion = MKCoordinateRegion.init(center: location, span: span)
+            self.myMapView.setRegion(regin, animated: true)
+        }
+    }
 }
 
