@@ -12,6 +12,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var myMapView: MKMapView!
     var locationManager: CLLocationManager!
+    var timer: Timer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +29,21 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        initDispatchQueue()
+//        initDispatchQueue()
+        getUserLocation()
+    }
+    
+    func getUserLocation() {
+        locationManager = CLLocationManager()
+        locationManager.requestWhenInUseAuthorization()
+        print("===========")
+        print(locationManager.location ?? "")
+        print("===========")
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true, block: { [self] timer in
+            print("location:\(String(describing: self.locationManager.location) )")
+        })
+
     }
     
     func initDispatchQueue() {
@@ -57,6 +72,15 @@ class ViewController: UIViewController {
     }
     
     @IBAction func setMapTypeAction(_ sender: UISegmentedControl) {
+        // 取得目前位置
+        if let coordinate = locationManager.location?.coordinate{
+            let xScale: CLLocationDegrees = 0.01
+            let yScale: CLLocationDegrees = 0.01
+            let span: MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: yScale, longitudeDelta: xScale)
+            let region = MKCoordinateRegion.init(center: coordinate, span: span)
+            myMapView.setRegion(region, animated: true)
+        }
+        
         switch sender.selectedSegmentIndex {
         case 0:
             myMapView.mapType = .standard
